@@ -3,9 +3,9 @@
 	"id": "xmasmisty",
 	"version": "${version}",
 	"name": "XMasMisty",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "xmas event made by misty",
 	"authors": [
-		"Me!"
+		"misty!"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",

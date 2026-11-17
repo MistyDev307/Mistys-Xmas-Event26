@@ -1,11 +1,13 @@
 package xmasevent.com.misty;
 
 import net.fabricmc.api.ModInitializer;
-
 import net.minecraft.resources.Identifier;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xmasevent.com.misty.tournament.TournamentLeaderboard;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
+import xmasevent.com.misty.comands.TournamentCommands;
+import xmasevent.com.misty.tournament.RaceMechanics;
 
 public class XMasMisty implements ModInitializer {
 	public static final String MOD_ID = "xmasmisty";
@@ -17,11 +19,16 @@ public class XMasMisty implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		// This code runs as soon as Minecraft is in a mod-load-ready state.
-		// However, some things (like resources) may still be uninitialized.
-		// Proceed with mild caution.
-
 		LOGGER.info("Hello Fabric world!");
+
+
+		TournamentCommands.register();
+		RaceMechanics.register();
+		TournamentLeaderboard leaderboard = new TournamentLeaderboard();
+
+		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
+			leaderboard.createLeaderBoard(server);
+		});
 	}
 
 	public static Identifier id(String path) {
