@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xmasevent.com.misty.tournament.TournamentCountdown;
 import xmasevent.com.misty.tournament.TournamentLeaderboard;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import xmasevent.com.misty.comands.TournamentCommands;
@@ -22,16 +23,22 @@ public class XMasMisty implements ModInitializer {
 		LOGGER.info("Hello Fabric world!");
 
 
-		TournamentCommands.register();
+
 		RaceMechanics.register();
+		COUNTDOWN.register();
 		TournamentLeaderboard leaderboard = new TournamentLeaderboard();
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {
 			leaderboard.createLeaderBoard(server);
 		});
+
+		TournamentCommands.register();
+		TournamentCommands.registerCountdownCommands();
 	}
 
 	public static Identifier id(String path) {
 		return Identifier.fromNamespaceAndPath(MOD_ID, path);
 	}
+
+	public static final TournamentCountdown COUNTDOWN = new TournamentCountdown();
 }
