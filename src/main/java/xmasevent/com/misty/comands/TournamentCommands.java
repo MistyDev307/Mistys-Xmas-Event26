@@ -9,7 +9,7 @@ import net.minecraft.commands.SharedSuggestionProvider;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.permissions.Permissions;
 import xmasevent.com.misty.XMasMisty;
-
+import xmasevent.com.misty.tournament.teams.TeamManager;
 import java.util.Map;
 
 public class TournamentCommands {
@@ -45,7 +45,48 @@ public class TournamentCommands {
                                                 int points = IntegerArgumentType.getInteger(context, "points");
 
                                                 return addTeamPoints(context.getSource(), team, points);}))));
+            dispatcher.register(
+                    Commands.literal("teamadd")
+                            .requires(source -> source.permissions()
+                                    .hasPermission(Permissions.COMMANDS_MODERATOR))
+
+                            .then(Commands.argument("player", StringArgumentType.word())
+
+                                    .then(Commands.argument("team", StringArgumentType.word())
+
+                                            .suggests((context, builder) ->
+                                                    SharedSuggestionProvider.suggest(
+                                                            TeamManager.TEAMS.keySet(), builder))
+
+                                            .executes(context -> {
+
+                                                String player = StringArgumentType.getString(context, "player");
+
+                                                String team = StringArgumentType.getString(context, "team").toLowerCase();
+
+                                                var server = context.getSource().getServer();
+
+                                                // Make sure tournament teams exist
+                                                TeamManager.registerTeams(server);
+
+                                                boolean success = TeamManager.addPlayer(
+                                                        server,
+                                                        player,
+                                                        team);
+
+                                                if (!success) {
+
+                                                    context.getSource().sendFailure(
+                                                            Component.literal("Could not add player! Check the team name and its player limit."));
+
+                                                    return 0;
+                                                }
+
+                                                context.getSource().sendSuccess(() -> Component.literal("Added " + player + " to " +TeamManager.TEAMS.get(team) + "!"),true);
+
+                                                return 1;}))));
         });
+
     }// end register method
 
     private static int addTeamPoints(
@@ -134,10 +175,7 @@ public class TournamentCommands {
 
                                                 int seconds = IntegerArgumentType.getInteger(context, "seconds");
 
-                                                XMasMisty.COUNTDOWN.start(
-                                                        context.getSource().getServer(),
-                                                        seconds
-                                                );
+                                                XMasMisty.COUNTDOWN.start(context.getSource().getServer(),seconds, "Ends in: ");
 
                                                 context.getSource().sendSuccess(
                                                         () -> Component.literal("Countdown started for " + seconds + " seconds!"),

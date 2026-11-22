@@ -4,11 +4,9 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xmasevent.com.misty.tournament.TournamentCountdown;
-import xmasevent.com.misty.tournament.TournamentLeaderboard;
+import xmasevent.com.misty.tournament.*;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import xmasevent.com.misty.comands.TournamentCommands;
-import xmasevent.com.misty.tournament.RaceMechanics;
 
 public class XMasMisty implements ModInitializer {
 	public static final String MOD_ID = "xmasmisty";
@@ -21,8 +19,9 @@ public class XMasMisty implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		LOGGER.info("Hello Fabric world!");
+		TournamentManager.registerAllGames();
 
-
+		GameVotingManager.registerTickEvents();
 
 		RaceMechanics.register();
 		COUNTDOWN.register();
