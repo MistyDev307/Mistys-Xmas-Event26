@@ -1,5 +1,6 @@
 package xmasevent.com.misty.games.presenthunt;
 
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.GameType;
 import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
@@ -7,7 +8,7 @@ import net.minecraft.world.InteractionResult;
 
 public class PresentHuntMechanics
 {
-    public static Boolean eliminatePlayer(ServerPlayer attacker, ServerPlayer target)
+    public static Boolean eliminatePlayer(ServerPlayer attacker, ServerPlayer target, MinecraftServer server)
     {
         if (!PresentHuntRoles.isSeeker(attacker.getUUID()))
         {
@@ -20,7 +21,14 @@ public class PresentHuntMechanics
         }// end if
 
         target.setGameMode(GameType.SPECTATOR);
+
         PresentHuntRoles.eliminateHider(target.getUUID());
+
+        if (!PresentHuntRoles.hasHidersRemaining())
+        {
+            PresentHuntManager.endRound(server,true);
+        }// end if
+
         return true;
     }// end eliminatePlayer method
 
@@ -47,7 +55,8 @@ public class PresentHuntMechanics
             }// end if
 
 
-            Boolean eliminated = eliminatePlayer(attacker, target);
+            MinecraftServer server = attacker.level().getServer();
+            Boolean eliminated = eliminatePlayer(attacker, target, server);
 
             if (eliminated)
             {

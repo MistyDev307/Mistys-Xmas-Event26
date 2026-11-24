@@ -39,6 +39,11 @@ public class PresentHuntRoles
         return ELIMINATED.contains(playerUUID);
     }// end isEliminated method
 
+    public static boolean hasHidersRemaining()
+    {
+        return !HIDERS.isEmpty();
+    }// end hasHidersRemaining method
+
     public static void eliminateHider(UUID playerUUID)
     {
         HIDERS.remove(playerUUID);

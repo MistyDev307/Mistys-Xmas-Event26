@@ -23,5 +23,20 @@ public class PresentHuntLocations
     {
         SeekerReleaseSpawn = position;
     }// end setSeekerReleaseSpawn method
+
+    public static BlockPos getHiderSpawn()
+    {
+        return hiderSpawn;
+    }// end method
+
+    public static BlockPos getSeekerSpawnCage()
+    {
+        return seekerSpawnCage;
+    }// end getSeekerReleaseSpawn method
+
+    public static BlockPos getSeekerReleaseSpawn()
+    {
+        return SeekerReleaseSpawn;
+    }// end getSeekerReleaseSpawn method
 }// end class
 

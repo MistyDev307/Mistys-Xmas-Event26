@@ -4,6 +4,8 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.resources.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xmasevent.com.misty.games.presenthunt.PresentHuntCountdown;
+import xmasevent.com.misty.games.presenthunt.PresentHuntManager;
 import xmasevent.com.misty.games.presenthunt.PresentHuntMechanics;
 import xmasevent.com.misty.tournament.*;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
@@ -27,6 +29,8 @@ public class XMasMisty implements ModInitializer {
 		RaceMechanics.register();
 		COUNTDOWN.register();
 		PresentHuntMechanics.registerAttackEvent();
+		PresentHuntCountdown.register();
+		PresentHuntManager.registerDisconnectEvent();
 		TournamentLeaderboard leaderboard = new TournamentLeaderboard();
 
 		ServerLifecycleEvents.SERVER_STARTED.register(server -> {

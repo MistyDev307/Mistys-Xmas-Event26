@@ -46,8 +46,9 @@ public class TournamentCountdown
 
                 if (onFinish != null)
                 {
-                    onFinish.accept(serverTickEvent);
+                    Consumer<MinecraftServer> callback = onFinish;
                     onFinish = null;
+                    callback.accept(serverTickEvent);
                 }// end if
             }// end if
         });
